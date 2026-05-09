@@ -1,0 +1,270 @@
+Metadata-Version: 2.4
+Name: rag-chat-application
+Version: 0.1.0
+Summary: A RAG-powered chat application with conversation management
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.109.0
+Requires-Dist: uvicorn[standard]>=0.27.0
+Requires-Dist: pydantic>=2.5.0
+Requires-Dist: redis>=5.0.0
+Requires-Dist: sqlalchemy>=2.0.0
+Requires-Dist: httpx>=0.26.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: psycopg2-binary>=2.9.9
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.23.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: black>=23.12.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: mypy>=1.8.0; extra == "dev"
+
+# Cerebra
+
+A RAG (Retrieval-Augmented Generation) powered chat application with conversation management capabilities.
+
+## Project Overview
+
+This application provides a scalable foundation for building AI-powered chat systems with:
+- FastAPI backend with async support
+- Docker-based containerization
+- Modular architecture for future RAG/Agent integration
+- Comprehensive testing framework
+- Health monitoring and operations tooling
+
+## Architecture
+
+```
+User Request
+    ↓
+FastAPI API Layer
+    ↓
+Security Guards
+    ↓
+Conversation Manager
+    ↓
+RAG / Agents (Phase 2+)
+    ↓
+Response Generation
+    ↓
+Output Filtering
+    ↓
+Logging & Monitoring
+```
+
+## Repository Structure
+
+```
+project-root/
+│
+├── app/
+│   ├── main.py          # FastAPI application entrypoint
+│   ├── config.py        # Configuration management
+│   ├── models.py        # Pydantic schemas and data contracts
+│   └── __init__.py
+│
+├── frontend/            # Placeholder for future UI
+│
+├── tests/
+│   ├── test_health.py   # API endpoint tests
+│   ├── test_config.py   # Configuration tests
+│   └── test_models.py   # Schema validation tests
+│
+├── docs/                # Documentation
+│
+├── scripts/
+│   └── healthcheck.py   # Service health verification
+│
+├── docker-compose.yml   # Multi-service orchestration
+├── Dockerfile           # Backend containerization
+├── pyproject.toml       # Python dependency management
+├── .env.example         # Environment variable template
+└── README.md
+```
+
+## Quick Start
+
+### Prerequisites
+
+- Docker and Docker Compose
+- Python 3.11+ (for local development)
+
+### Using Docker Compose (Recommended)
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd rag-chat-application
+   ```
+
+2. **Configure environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+3. **Start all services**
+   ```bash
+   docker-compose up --build
+   ```
+
+4. **Access the API**
+   - API: http://localhost:8000
+   - Swagger Docs: http://localhost:8000/docs
+   - Health Check: http://localhost:8000/health
+
+### Local Development
+
+1. **Create virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pip install -e ".[dev]"
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Run the application**
+   ```bash
+   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
+
+5. **Run tests**
+   ```bash
+   pytest
+   ```
+
+## Configuration
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `OPENAI_API_KEY` | OpenAI API key | Required |
+| `OPENAI_MODEL` | OpenAI model to use | `gpt-4o` |
+| `REDIS_URL` | Redis connection URL | `redis://localhost:6379` |
+| `QDRANT_URL` | Qdrant vector DB URL | `http://localhost:6333` |
+| `POSTGRES_URL` | PostgreSQL connection URL | `postgresql://user:pass@localhost:5432/app` |
+| `DEBUG_MODE` | Enable debug/reload mode | `false` |
+| `RATE_LIMIT_ENABLED` | Enable rate limiting | `true` |
+| `API_HOST` | API server host | `0.0.0.0` |
+| `API_PORT` | API server port | `8000` |
+
+## API Endpoints
+
+### Health Check
+```bash
+GET /health
+```
+
+Response:
+```json
+{
+  "status": "ok",
+  "version": "0.1.0",
+  "timestamp": "2024-01-01T00:00:00Z"
+}
+```
+
+### Chat
+```bash
+POST /chat
+Content-Type: application/json
+
+{
+  "message": "Hello!",
+  "session_id": "unique-session-id"
+}
+```
+
+Response:
+```json
+{
+  "response": "Received your message: Hello!",
+  "session_id": "unique-session-id",
+  "timestamp": "2024-01-01T00:00:00Z"
+}
+```
+
+### Root
+```bash
+GET /
+```
+
+## Testing
+
+Run all tests:
+```bash
+pytest
+```
+
+Run with coverage:
+```bash
+pytest --cov=app
+```
+
+Run specific test file:
+```bash
+pytest tests/test_health.py
+```
+
+## Health Monitoring
+
+Use the health check script to verify all services:
+```bash
+python scripts/healthcheck.py
+```
+
+## Security Considerations
+
+- Environment secrets are isolated in `.env` files
+- API validation through Pydantic schemas
+- CORS middleware configured (adjust for production)
+- Rate limiting planned for Phase 2
+- Request size limits recommended for production
+
+## Development Workflow
+
+1. **Feature Branch**: Create a branch for new features
+2. **Development**: Implement changes with tests
+3. **Testing**: Run `pytest` to ensure all tests pass
+4. **Code Quality**: Use `black`, `ruff`, and `mypy` for linting
+5. **PR**: Submit pull request for review
+
+## Roadmap
+
+### Phase 1 (Current) ✅
+- [x] FastAPI backend skeleton
+- [x] Docker containerization
+- [x] Configuration management
+- [x] Shared data models
+- [x] Health endpoints
+- [x] Basic testing framework
+
+### Phase 2 (Next)
+- [ ] Retrieval infrastructure
+- [ ] Vector database integration
+- [ ] Embeddings pipeline
+- [ ] Hybrid search implementation
+- [ ] Initial RAG pipeline
+- [ ] Document ingestion system
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add/update tests
+5. Submit a pull request
+
+## License
+
+MIT License

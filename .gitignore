@@ -1,9 +1,19 @@
 ```
 # Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.ENV
+.ENV.local
+env.bak/
+venv.bak/
+
+# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -20,46 +30,33 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# Virtual environments
-venv/
-env/
-ENV/
-.venv/
-.env/
-
-# Dependencies
-node_modules/
+# Testing
+.coverage
+coverage/
+htmlcov/
+.nosetests
+.unit_test.log
+.tox/
+.coverage.*
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# Logs
-*.log
-
-# Environment variables
-.env
-.env.local
-.env.*
-
-# Coverage reports
-.coverage
-htmlcov/
-.coverage.*
-coverage.xml
-*.cover
-
-# Testing
-.pytest_cache/
-.mypy_cache/
-
-# Docker
-.dockerenv
+*.tmp
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+*.env.*
 ```

@@ -341,3 +341,16 @@ def create_embedding_model(
         )
     
     return model_class(**kwargs)
+
+
+# Global embedding model instance for Phase 3
+_embedding_model: Optional[BaseEmbeddingModel] = None
+
+
+def get_embedding_model() -> BaseEmbeddingModel:
+    """Get or create global embedding model instance."""
+    global _embedding_model
+    if _embedding_model is None:
+        _embedding_model = create_embedding_model(provider="mock")
+    return _embedding_model
+
