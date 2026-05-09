@@ -1,0 +1,4 @@
+This is a sample document for testing the RAG system.
+It contains information about refund policies and customer support procedures.
+Customers may request a refund within 30 days of purchase.
+The support team is available 24/7 to assist with any questions.

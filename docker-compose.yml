@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - QDRANT_URL=${QDRANT_URL:-http://qdrant:6333}
+      - POSTGRES_URL=${POSTGRES_URL:-postgresql://user:pass@postgres:5432/app}
+      - DEBUG_MODE=${DEBUG_MODE:-false}
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - ./app:/app/app
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=app
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+  postgres_data:
