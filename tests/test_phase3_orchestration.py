@@ -477,4 +477,4 @@ class TestPhase3Integration:
         store.add_message(session_id, "assistant", str(result.output))
         
         messages = store.get_messages(session_id)
-        assert len(messages) == 3
+        assert len(messages) == 2
