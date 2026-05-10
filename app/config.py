@@ -26,3 +26,10 @@ RATE_LIMIT_ENABLED = os.getenv("RATE_LIMIT_ENABLED", "true").lower() == "true"
 # API Configuration
 API_HOST = os.getenv("API_HOST", "0.0.0.0")
 API_PORT = int(os.getenv("API_PORT", "8000"))
+
+# CORS Configuration
+# In production, set this to your frontend domain(s)
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+if ALLOWED_ORIGINS == ["*"]:
+    # Keep wildcard for development, but log warning
+    print("WARNING: CORS allows all origins (*). Configure ALLOWED_ORIGINS for production.")

@@ -92,6 +92,7 @@ class SimpleWorkflowExecutor:
                 if on_error == "stop":
                     step.status = StepStatus.FAILED
                     overall_status = StepStatus.FAILED
+                    executed_steps.append(step)
                     # Skip remaining steps
                     for remaining_step in steps[i+1:]:
                         remaining_step.status = StepStatus.SKIPPED
