@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 import time
 from typing import List, Optional, Dict, Any
 
-from app.config import API_HOST, API_PORT, DEBUG_MODE
+from app.config import API_HOST, API_PORT, DEBUG_MODE, ALLOWED_ORIGINS
 from app.models import (
     ChatRequest, ChatResponse, HealthResponse,
     RetrievalRequest, RetrievalResponse, IngestionResult
@@ -51,7 +51,7 @@ app = FastAPI(
 # Configure CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -73,10 +73,12 @@ class SemanticCache:
         # Search for similar queries in cache
         best_match = None
         best_similarity = 0.0
+        expired_keys = []
         
+        # First pass: identify expired entries without modifying dict during iteration
         for cache_key, cached_item in self.cache.items():
             if cached_item.is_expired():
-                self._evict(cache_key)
+                expired_keys.append(cache_key)
                 continue
             
             # Compute similarity
@@ -87,6 +89,10 @@ class SemanticCache:
                 if similarity > best_similarity and similarity >= self.similarity_threshold:
                     best_similarity = similarity
                     best_match = cached_item
+        
+        # Evict expired entries after iteration
+        for cache_key in expired_keys:
+            self._evict(cache_key)
         
         if best_match:
             self.hits += 1
